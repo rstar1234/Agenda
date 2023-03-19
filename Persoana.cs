@@ -20,9 +20,13 @@ namespace Agenda
         private const int GRUP = 5;
 
         private string nume, email, grup;
-        private int idPersoana, numarDeTelefon;
+        private int idPersoana;
+        private long numarDeTelefon = 0;
         private DateTime ziDeNastere;
-        private string linieFisier;
+        public Persoana()
+        {
+            nume = email = grup = String.Empty;
+        }
 
         public Persoana(string linieFisier)
         {
@@ -51,11 +55,52 @@ namespace Agenda
             string obiectPersoanaPentruFisier = string.Format("{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}{0}",
                 SEPARATOR_PRINCIPAL_FISIER,
                 idPersoana.ToString(),
+                nume,
                 ziDeNastere.ToString(),
                 numarDeTelefon.ToString(),
                 email,
                 grup);
             return obiectPersoanaPentruFisier;
+        }
+
+        public string Info()
+        {
+            string info = string.Format("Id: {0} Nume: {1} Zi de nastere: {2} Numar de telefon: {3} Email: {4} Grup: {5}",
+                idPersoana.ToString(),
+                nume ?? " NECUNOSCUT ",
+                ziDeNastere.ToString() ?? " NECUNOSCUT ",
+                numarDeTelefon.ToString() ?? " NECUNOSCUT ",
+                email ?? " NECUNOSCUT ",
+                grup ?? " NECUNOSCUT ");
+            return info;
+        }
+        public int GetIdPersoana()
+        {
+            return idPersoana;
+        }
+        public string GetNumePersoana()
+        { 
+            return nume;
+        }
+        public long GetNumarDeTelefon()
+        { 
+            return numarDeTelefon; 
+        }
+        public void SetNumarDeTelefon(int numarDeTelefon)
+        {
+            this.numarDeTelefon = numarDeTelefon;
+        }
+        public string GetEmail() 
+        {
+            return email;
+        }
+        public string GetZiDeNastere()
+        {
+            return ziDeNastere.ToString();
+        }
+        public string GetGrup()
+        {
+            return grup;
         }
     }
 }

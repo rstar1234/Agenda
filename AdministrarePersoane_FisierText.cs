@@ -46,5 +46,57 @@ namespace Agenda
 
             return persoane;
         }
+        public Persoana GetPersoanaDupaNume(string nume)
+        {
+            Persoana persoana = new Persoana();
+            using (StreamReader streamReaderFisier = new StreamReader(numeFisier))
+            {
+                string linieFisier;
+                while ((linieFisier = streamReaderFisier.ReadLine()) != null)
+                {
+                    persoana = new Persoana(linieFisier);
+                    if (persoana.GetNumePersoana() == nume)
+                    {
+                        return persoana;
+                    }
+                }
+            }
+            return new Persoana();
+        }
+        public Persoana GetPersoanaDupaNumarDeTelefon(int numarDeTelefon)
+        {
+            Persoana persoana = new Persoana();
+            persoana.SetNumarDeTelefon(0);
+            using (StreamReader streamReaderFisier = new StreamReader(numeFisier))
+            {
+                string linieFisier;
+                while ((linieFisier = streamReaderFisier.ReadLine()) != null)
+                {
+                    persoana = new Persoana(linieFisier);
+                    if (persoana.GetNumarDeTelefon() == numarDeTelefon)
+                    {
+                        return persoana;
+                    }
+                }
+            }
+            return new Persoana();
+        }
+        public Persoana GetPersoanaDupaEmail(string email)
+        {
+            Persoana persoana = new Persoana();
+            using (StreamReader streamReaderFisier = new StreamReader(numeFisier))
+            {
+                string linieFisier;
+                while ((linieFisier = streamReaderFisier.ReadLine()) != null)
+                {
+                    persoana = new Persoana(linieFisier);
+                    if (persoana.GetEmail() == email)
+                    {
+                        return persoana;
+                    }
+                }
+            }
+            return new Persoana();
+        }
     }
 }
