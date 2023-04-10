@@ -45,8 +45,10 @@ namespace Agenda
                         Console.WriteLine($"Introduceti adresa de email a persoanei {idPersoana}: ");
                         string email = Console.ReadLine();
                         Console.WriteLine($"Introduceti grupul caruia apartine persoana {idPersoana}: ");
-                        string grup = Console.ReadLine();
-                        persoana = new Persoana(idPersoana ,nume, email, grup, (int)numarDeTelefon, ziDeNastere);
+                        int grup = Convert.ToInt32(Console.ReadLine());
+                        Persoana.Grup EnumGrup = (Persoana.Grup)grup;
+                       
+                        persoana = new Persoana(idPersoana ,nume, email, EnumGrup, (int)numarDeTelefon, ziDeNastere);
                         nrPersoane++;
 
                         break;
@@ -68,7 +70,7 @@ namespace Agenda
                         Console.WriteLine("Introduceti numele persoanei de cautat: ");
                         nume = Console.ReadLine();
                         persoana = administrarePersoane.GetPersoanaDupaNume(nume);
-                        if( persoana.GetNumePersoana() == "")
+                        if( persoana.nume == "")
                         {
                             Console.WriteLine("Nu s-a gasit acea persoana in fisier!");
                         }
@@ -83,7 +85,7 @@ namespace Agenda
                         Console.WriteLine("Introduceti numarul de telefon al persoanei de cautat: ");
                         numarDeTelefon = Convert.ToInt32(Console.ReadLine());
                         persoana = administrarePersoane.GetPersoanaDupaNumarDeTelefon((int)numarDeTelefon);
-                        if(persoana.GetNumarDeTelefon() == 0)
+                        if(persoana.numarDeTelefon == 0)
                         {
                             Console.WriteLine("Nu s-a gasit acea persoana in fisier!");
                         }
@@ -98,7 +100,7 @@ namespace Agenda
                         Console.WriteLine("Introduceti adresa de email a persoanei de cautat: ");
                         email = Console.ReadLine();
                         persoana = administrarePersoane.GetPersoanaDupaNume(email);
-                        if (persoana.GetEmail() == "")
+                        if (persoana.email == "")
                         {
                             Console.WriteLine("Nu s-a gasit acea persoana in fisier!");
                         }
@@ -133,12 +135,12 @@ namespace Agenda
             for(int contor = 0;  contor < nrPersoana; contor++) 
             {
                 string infoPersoana = String.Format("Persoana cu ID-ul {0} are numele {1}, ziua de nastere {2}, numarul de telefon {3}, adresa de email {4} si este in grupul {5}",
-                    persoane[contor].GetIdPersoana() ,
-                    persoane[contor].GetNumePersoana() ?? " NECUNOSCUT ",
-                    persoane[contor].GetZiDeNastere() ?? " NECUNOSCUT ",
-                    persoane[contor].GetNumarDeTelefon(),
-                    persoane[contor].GetEmail() ?? " NECUNOSCUT ",
-                    persoane[contor].GetGrup() ?? " NECUNOSCUT ");
+                    persoane[contor].idPersoana,
+                    persoane[contor].nume ?? " NECUNOSCUT ",
+                    persoane[contor].ziDeNastere.ToString() ?? " NECUNOSCUT ",
+                    persoane[contor].idPersoana,
+                    persoane[contor].email ?? " NECUNOSCUT ",
+                    persoane[contor]._grup.ToString() ?? " NECUNOSCUT ");
 
                 Console.WriteLine(infoPersoana);
             }

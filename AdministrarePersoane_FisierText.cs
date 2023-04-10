@@ -10,7 +10,10 @@ namespace Agenda
     internal class AdministrarePersoane_FisierText
     {
         private const int NR_MAX_PERSOANE = 60;
-        private string numeFisier;
+        private string numeFisier
+        {
+            get; set;
+        }
         public AdministrarePersoane_FisierText(string numeFisier)
         {
             this.numeFisier = numeFisier;
@@ -55,7 +58,7 @@ namespace Agenda
                 while ((linieFisier = streamReaderFisier.ReadLine()) != null)
                 {
                     persoana = new Persoana(linieFisier);
-                    if (persoana.GetNumePersoana() == nume)
+                    if (persoana.nume == nume)
                     {
                         return persoana;
                     }
@@ -66,14 +69,13 @@ namespace Agenda
         public Persoana GetPersoanaDupaNumarDeTelefon(int numarDeTelefon)
         {
             Persoana persoana = new Persoana();
-            persoana.SetNumarDeTelefon(0);
             using (StreamReader streamReaderFisier = new StreamReader(numeFisier))
             {
                 string linieFisier;
                 while ((linieFisier = streamReaderFisier.ReadLine()) != null)
                 {
                     persoana = new Persoana(linieFisier);
-                    if (persoana.GetNumarDeTelefon() == numarDeTelefon)
+                    if (persoana.numarDeTelefon == numarDeTelefon)
                     {
                         return persoana;
                     }
@@ -90,7 +92,7 @@ namespace Agenda
                 while ((linieFisier = streamReaderFisier.ReadLine()) != null)
                 {
                     persoana = new Persoana(linieFisier);
-                    if (persoana.GetEmail() == email)
+                    if (persoana.email == email)
                     {
                         return persoana;
                     }
