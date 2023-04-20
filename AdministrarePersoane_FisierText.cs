@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Agenda
 {
-    internal class AdministrarePersoane_FisierText
+    public class AdministrarePersoane_FisierText
     {
         private const int NR_MAX_PERSOANE = 60;
         private string numeFisier

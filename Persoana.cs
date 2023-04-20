@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Agenda
 {
-    internal class Persoana
+    public class Persoana
     {
         //constante
         private const char SEPARATOR_PRINCIPAL_FISIER = ',';
@@ -47,7 +47,7 @@ namespace Agenda
             ziDeNastere = DateTime.Parse(dateFisier[ZI_DE_NASTERE]);
             numarDeTelefon = Convert.ToInt32(dateFisier[NUMAR_DE_TELEFON]);
             email = dateFisier[EMAIL];
-            //grup = dateFisier[GRUP];
+            _grup = (Grup)Enum.Parse(typeof(Grup), dateFisier[GRUP]);
         }
 
         public Persoana(int _idPersoana, string _nume, string _email, Grup _grup, int _numarDeTelefon, DateTime _ziDeNastere)
@@ -61,19 +61,20 @@ namespace Agenda
         }
         public string ConversieLaSir_PentruFisier()
         {
-            string obiectPersoanaPentruFisier = string.Format("{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}[0}",
+            string obiectPersoanaPentruFisier = string.Format("{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}{0}",
                 SEPARATOR_PRINCIPAL_FISIER,
                 idPersoana.ToString(),
                 nume,
                 ziDeNastere.ToString(),
                 numarDeTelefon.ToString(),
                 email,
-                _grup);
+                _grup.ToString());
             return obiectPersoanaPentruFisier;
         }
 
         public string Info()
         {
+            //string grupuri = String.Join(" ", );
             string info = string.Format("Id: {0} Nume: {1} Zi de nastere: {2} Numar de telefon: {3} Email: {4} Grup: {5}",
                 idPersoana.ToString(),
                 nume ?? " NECUNOSCUT ",

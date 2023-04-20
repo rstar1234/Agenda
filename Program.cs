@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,13 @@ namespace Agenda
             Persoana persoana = new Persoana();
             string optiune;
             string numeFisier = ConfigurationManager.AppSettings["NumeFisier"];
-            AdministrarePersoane_FisierText administrarePersoane = new AdministrarePersoane_FisierText(numeFisier);
+            string locatieFisierSolutie =
+            Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.Parent.FullName;
+            // setare locatie fisier in directorul corespunzator solutiei
+            // astfel incat datele din fisier sa poata fi utilizate si de alte proiecte
+            string caleCompletaFisier = locatieFisierSolutie + "\\" + numeFisier;
+            AdministrarePersoane_FisierText administrarePersoane = new
+            Agenda.AdministrarePersoane_FisierText(caleCompletaFisier);
             int nrPersoane = 0;
             do
             {
@@ -45,9 +52,8 @@ namespace Agenda
                         Console.WriteLine($"Introduceti adresa de email a persoanei {idPersoana}: ");
                         string email = Console.ReadLine();
                         Console.WriteLine($"Introduceti grupul caruia apartine persoana {idPersoana}: ");
-                        int grup = Convert.ToInt32(Console.ReadLine());
-                        Persoana.Grup EnumGrup = (Persoana.Grup)grup;
-                       
+                        string grup = Console.ReadLine();
+                        Persoana.Grup EnumGrup = (Persoana.Grup)Enum.Parse(typeof(Persoana.Grup), grup);
                         persoana = new Persoana(idPersoana ,nume, email, EnumGrup, (int)numarDeTelefon, ziDeNastere);
                         nrPersoane++;
 
@@ -56,6 +62,7 @@ namespace Agenda
                     case "B":
                         Persoana[] persoane = administrarePersoane.GetPersoane(out nrPersoane);
                         AfisarePersoane(persoane, nrPersoane);
+
 
                         break;
 
