@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -24,17 +25,27 @@ namespace Agenda
         [Flags]
         public enum Grup
         { 
+            None = 0,
             Familie = 1,
             Prieteni = 2,
-            Serviciu = 4
+            Serviciu = 4,
         };
         public int idPersoana { get; set; }
         public long numarDeTelefon { get; set; } = 0;
         public DateTime ziDeNastere { get; set; }
         public Grup _grup { get; set; }
+        public ArrayList grupuri { get; set; }
         public Persoana()
         {
             nume = email = String.Empty;
+        }
+
+        public string GrupAsString
+        {
+            get 
+            { 
+                return string.Join(", ", grupuri.ToArray());
+            }
         }
 
         public Persoana(string linieFisier)
@@ -47,10 +58,12 @@ namespace Agenda
             ziDeNastere = DateTime.Parse(dateFisier[ZI_DE_NASTERE]);
             numarDeTelefon = Convert.ToInt32(dateFisier[NUMAR_DE_TELEFON]);
             email = dateFisier[EMAIL];
-            _grup = (Grup)Enum.Parse(typeof(Grup), dateFisier[GRUP]);
+            _grup = GetGrup(dateFisier[GRUP]);
+            grupuri = new ArrayList();
+            grupuri.AddRange(dateFisier[GRUP].Split(' '));
         }
 
-        public Persoana(int _idPersoana, string _nume, string _email, Grup _grup, int _numarDeTelefon, DateTime _ziDeNastere)
+        public Persoana(int _idPersoana, string _nume, string _email, Grup _grup, long _numarDeTelefon, DateTime _ziDeNastere)
         {
             idPersoana = _idPersoana;
             nume = _nume;
@@ -58,6 +71,15 @@ namespace Agenda
             this._grup = _grup;
             numarDeTelefon = _numarDeTelefon;
             ziDeNastere = _ziDeNastere;
+        }
+        public Persoana(Persoana p)
+        {
+            idPersoana = p.idPersoana;
+            nume = p.nume;
+            email = p.email;
+            this._grup = p._grup;
+            numarDeTelefon= p.numarDeTelefon;
+            ziDeNastere= p.ziDeNastere;
         }
         public string ConversieLaSir_PentruFisier()
         {
@@ -72,6 +94,24 @@ namespace Agenda
             return obiectPersoanaPentruFisier;
         }
 
+        public Grup GetGrup(string grup)
+        {
+            string[]grupuri = grup.Split(' ');
+            Grup EnumGrup = Grup.None;
+            foreach (string g in grupuri)
+            {
+                if (Enum.TryParse(g, false, out Grup ParseGrup))
+                {
+                    EnumGrup |= (Grup)Enum.Parse(typeof(Grup), g);
+                }
+                else
+                {
+                    Console.WriteLine("Nu exista acel grup!");
+                }
+            }
+            return EnumGrup;
+        }
+
         public string Info()
         {
             //string grupuri = String.Join(" ", );
@@ -81,7 +121,7 @@ namespace Agenda
                 ziDeNastere.ToString() ?? " NECUNOSCUT ",
                 numarDeTelefon.ToString() ?? " NECUNOSCUT ",
                 email ?? " NECUNOSCUT ",
-                _grup.ToString() ?? " NECUNOSCUT "
+                GrupAsString ?? " NECUNOSCUT "
                 );
             return info;
         }

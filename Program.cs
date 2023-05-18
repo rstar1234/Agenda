@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Agenda
 {
@@ -25,7 +21,7 @@ namespace Agenda
             int nrPersoane = 0;
             do
             {
-                
+
                 Console.WriteLine("A. Introducere date persoana");
                 Console.WriteLine("B. Afisarea datelor persoanelor");
                 Console.WriteLine("C. Salvare persoana in fisier");
@@ -34,6 +30,7 @@ namespace Agenda
                 Console.WriteLine("F. Cauta persoana dupa email");
                 Console.WriteLine("G. Afisarea persoanelor ce au ziua de nastere intr-o anumita luna");
                 Console.WriteLine("H. Afisarea persoanelor dintr-un anumit grup");
+                Console.WriteLine("I. Stergere persoana");
                 Console.WriteLine("X. Exit");
                 Console.WriteLine("Alegeti o optiune: ");
                 optiune = Console.ReadLine();
@@ -48,19 +45,21 @@ namespace Agenda
                         string temp = Console.ReadLine();
                         DateTime ziDeNastere = Convert.ToDateTime(temp);
                         Console.WriteLine($"Introduceti numarul de telefon al persoanei {idPersoana}: ");
-                        long numarDeTelefon = Convert.ToInt32(Console.ReadLine());
+                        long numarDeTelefon = Convert.ToInt64(Console.ReadLine());
                         Console.WriteLine($"Introduceti adresa de email a persoanei {idPersoana}: ");
                         string email = Console.ReadLine();
-                        Console.WriteLine($"Introduceti grupul caruia apartine persoana {idPersoana}: ");
+                        Console.WriteLine($"Introduceti grupul sau grupurile carora le apartine persoana {idPersoana}: ");
                         string grup = Console.ReadLine();
-                        Persoana.Grup EnumGrup = (Persoana.Grup)Enum.Parse(typeof(Persoana.Grup), grup);
-                        persoana = new Persoana(idPersoana ,nume, email, EnumGrup, (int)numarDeTelefon, ziDeNastere);
+                        Persoana.Grup EnumGrup = persoana.GetGrup(grup);
+                        Console.WriteLine(EnumGrup.ToString());
+                        persoana = new Persoana(idPersoana, nume, email, EnumGrup, numarDeTelefon, ziDeNastere);
                         nrPersoane++;
 
                         break;
 
                     case "B":
                         Persoana[] persoane = administrarePersoane.GetPersoane(out nrPersoane);
+                        Console.WriteLine(persoana._grup);
                         AfisarePersoane(persoane, nrPersoane);
 
 
@@ -77,7 +76,7 @@ namespace Agenda
                         Console.WriteLine("Introduceti numele persoanei de cautat: ");
                         nume = Console.ReadLine();
                         persoana = administrarePersoane.GetPersoanaDupaNume(nume);
-                        if( persoana.nume == "")
+                        if (persoana.nume == "")
                         {
                             Console.WriteLine("Nu s-a gasit acea persoana in fisier!");
                         }
@@ -92,7 +91,7 @@ namespace Agenda
                         Console.WriteLine("Introduceti numarul de telefon al persoanei de cautat: ");
                         numarDeTelefon = Convert.ToInt32(Console.ReadLine());
                         persoana = administrarePersoane.GetPersoanaDupaNumarDeTelefon((int)numarDeTelefon);
-                        if(persoana.numarDeTelefon == 0)
+                        if (persoana.numarDeTelefon == 0)
                         {
                             Console.WriteLine("Nu s-a gasit acea persoana in fisier!");
                         }
@@ -125,11 +124,16 @@ namespace Agenda
 
                         break;
 
+                    case "I":
+
+                        break;
+
                     case "X":
 
                         return;
 
                     default:
+                        Console.WriteLine("Nu exista acea optiune!");
                         break;
                 }
             } while (optiune.ToUpper() != "X");
@@ -139,15 +143,15 @@ namespace Agenda
         public static void AfisarePersoane(Persoana[] persoane, int nrPersoana)
         {
             Console.WriteLine("Persoanele din agenda sunt: ");
-            for(int contor = 0;  contor < nrPersoana; contor++) 
+            for (int contor = 0; contor < nrPersoana; contor++)
             {
                 string infoPersoana = String.Format("Persoana cu ID-ul {0} are numele {1}, ziua de nastere {2}, numarul de telefon {3}, adresa de email {4} si este in grupul {5}",
                     persoane[contor].idPersoana,
                     persoane[contor].nume ?? " NECUNOSCUT ",
-                    persoane[contor].ziDeNastere.ToString() ?? " NECUNOSCUT ",
+                    persoane[contor].ziDeNastere.ToString("ddd, dd MMMM yyyy") ?? " NECUNOSCUT ",
                     persoane[contor].idPersoana,
                     persoane[contor].email ?? " NECUNOSCUT ",
-                    persoane[contor]._grup.ToString() ?? " NECUNOSCUT ");
+                    persoane[contor]._grup.ToString());
 
                 Console.WriteLine(infoPersoana);
             }
