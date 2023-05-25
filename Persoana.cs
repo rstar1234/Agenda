@@ -100,10 +100,10 @@ namespace Agenda
             Grup EnumGrup = Grup.None;
             foreach (string g in grupuri)
             {
-                string temp = g.Replace(", ", "");
+                string temp = g.Replace(",", "");
                 if (Enum.TryParse(temp, false, out Grup ParseGrup))
                 {
-                    EnumGrup |= (Grup)Enum.Parse(typeof(Grup), g);
+                    EnumGrup |= (Grup)Enum.Parse(typeof(Grup), temp);
                 }
                 else
                 {
