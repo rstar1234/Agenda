@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 
@@ -58,7 +59,7 @@ namespace Agenda
                         break;
 
                     case "B":
-                        Persoana[] persoane = administrarePersoane.GetPersoane(out nrPersoane);
+                        List<Persoana> persoane = administrarePersoane.GetPersoane();
                         Console.WriteLine(persoana._grup);
                         AfisarePersoane(persoane, nrPersoane);
 
@@ -140,7 +141,7 @@ namespace Agenda
 
             Console.ReadKey();
         }
-        public static void AfisarePersoane(Persoana[] persoane, int nrPersoana)
+        public static void AfisarePersoane(List<Persoana> persoane, int nrPersoana)
         {
             Console.WriteLine("Persoanele din agenda sunt: ");
             for (int contor = 0; contor < nrPersoana; contor++)

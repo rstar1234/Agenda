@@ -9,7 +9,6 @@ namespace Agenda
 {
     public class AdministrarePersoane_FisierText
     {
-        private const int NR_MAX_PERSOANE = 60;
         private string numeFisier
         {
             get; set;
@@ -23,27 +22,60 @@ namespace Agenda
 
         public void AddPersoana(Persoana persoana)
         {
+            persoana.idPersoana = GetID();
             using (StreamWriter streamWriterFisierText = new StreamWriter(numeFisier, true)) 
             {
                 streamWriterFisierText.WriteLine(persoana.ConversieLaSir_PentruFisier());
             }
         }
 
-        public Persoana[] GetPersoane(out int nrPersoane)
+        private int GetID()
         {
-            Persoana[] persoane = new Persoana[NR_MAX_PERSOANE];
+            int IDPersoana = 1;
+            using(StreamReader streamReader = new StreamReader(numeFisier))
+            {
+                string linieFisier;
+                while((linieFisier = streamReader.ReadLine())!=null)
+                {
+                    Persoana persoana = new Persoana(linieFisier);
+                    IDPersoana = persoana.idPersoana + 1;
+                }
+            }
+            return IDPersoana;
+        }
+
+        public void StergePersoana(List<Persoana> persoane, int persoanaID)
+        {
+            int nrPersoane = 0;
+            string fisierTemp = Path.GetTempFileName();
+            using (StreamWriter streamWriter = new StreamWriter(fisierTemp, true))
+            {
+                while (nrPersoane < persoane.Count-1 && nrPersoane != persoanaID)
+                {
+                    streamWriter.WriteLine(persoane[nrPersoane].ConversieLaSir_PentruFisier());
+                    nrPersoane++;
+                }
+
+            }
+            File.Delete(numeFisier);
+            File.Move(fisierTemp, numeFisier);
+            persoane.Remove(GetPersoanaDupaID(persoanaID));
+        }
+
+        public List<Persoana> GetPersoane()
+        {
+            List<Persoana> persoane = new List<Persoana>();
 
             // instructiunea 'using' va apela streamReader.Close()
             using (StreamReader streamReader = new StreamReader(numeFisier))
             {
                 string linieFisier;
-                nrPersoane = 0;
 
                 // citeste cate o linie si creaza un obiect de tip Student
                 // pe baza datelor din linia citita
                 while ((linieFisier = streamReader.ReadLine()) != null)
                 {
-                    persoane[nrPersoane++] = new Persoana(linieFisier);
+                    persoane.Add(new Persoana(linieFisier));
                 }
             }
 
@@ -66,7 +98,7 @@ namespace Agenda
             }
             return new Persoana();
         }
-        public Persoana GetPersoanaDupaNumarDeTelefon(int numarDeTelefon)
+        public Persoana GetPersoanaDupaNumarDeTelefon(long numarDeTelefon)
         {
             Persoana persoana = new Persoana();
             using (StreamReader streamReaderFisier = new StreamReader(numeFisier))
@@ -100,5 +132,23 @@ namespace Agenda
             }
             return new Persoana();
         }
+        public Persoana GetPersoanaDupaID(int id)
+        {
+            Persoana persoana = new Persoana();
+            using (StreamReader streamReaderFisier = new StreamReader(numeFisier))
+            {
+                string linieFisier;
+                while ((linieFisier = streamReaderFisier.ReadLine()) != null)
+                {
+                    persoana = new Persoana(linieFisier);
+                    if (persoana.idPersoana == id)
+                    {
+                        return persoana;
+                    }
+                }
+            }
+            return new Persoana();
+        }
     }
 }
+
