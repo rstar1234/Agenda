@@ -24,20 +24,21 @@ namespace Agenda
         {
             //adauga persoana in fisier
             persoana.idPersoana = GetID();
-            using (StreamWriter streamWriterFisierText = new StreamWriter(numeFisier, true)) 
+            using (StreamWriter streamWriterFisierText = new StreamWriter(numeFisier, true))
             {
                 streamWriterFisierText.WriteLine(persoana.ConversieLaSir_PentruFisier());
             }
+            //persoana.grupuri.AddRange(persoana._grup.ToString().Split(','));
         }
 
         private int GetID()
         {
             //asigura ca id-urile sun in ordine crescatoare si ca nu se repeta
             int IDPersoana = 1;
-            using(StreamReader streamReader = new StreamReader(numeFisier))
+            using (StreamReader streamReader = new StreamReader(numeFisier))
             {
                 string linieFisier;
-                while((linieFisier = streamReader.ReadLine())!=null)
+                while ((linieFisier = streamReader.ReadLine()) != null)
                 {
                     Persoana persoana = new Persoana(linieFisier);
                     IDPersoana = persoana.idPersoana + 1;
@@ -47,11 +48,11 @@ namespace Agenda
         }
 
         public void StergePersoana(List<Persoana> persoane, int persoanaID)
-        {   
+        {
             //sterge persoana mai intai din lista, apoi din fisier
-            //controlul dataGridView nu se actualizeaza in cazul stergerii ultimului element decat dupa ce se redeschide aplicatia, chiar daca se sterge din fisier
-            persoane.Remove(GetPersoanaDupaID(persoanaID));
-            StergeLinieFisier(GetPersoanaDupaID(persoanaID).ConversieLaSir_PentruFisier());   
+            //controlul dataGridView nu se actualizeaza in cazul stergerii decat dupa ce se redeschide aplicatia, chiar daca se sterge din fisier
+            persoane.RemoveAll(p => p.idPersoana == persoanaID);
+            StergeLinieFisier(GetPersoanaDupaID(persoanaID).ConversieLaSir_PentruFisier());
         }
 
         public void StergeLinieFisier(string persoanaLinieFisier)
@@ -63,7 +64,7 @@ namespace Agenda
             {
                 using (StreamWriter streamWriter = new StreamWriter(fisierTemp))
                 {
-                    while((linieFisier = streamReader.ReadLine()) != null)
+                    while ((linieFisier = streamReader.ReadLine()) != null)
                     {
                         if (String.Compare(linieFisier, persoanaLinieFisier) == 0)
                             continue;

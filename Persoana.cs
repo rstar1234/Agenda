@@ -24,7 +24,7 @@ namespace Agenda
         public string email { get; set; }
         [Flags]
         public enum Grup
-        { 
+        {
             None = 0,
             Familie = 1,
             Prieteni = 2,
@@ -34,7 +34,7 @@ namespace Agenda
         public long numarDeTelefon { get; set; } = 0;
         public DateTime ziDeNastere { get; set; }
         public Grup _grup { get; set; }
-        public ArrayList grupuri { get; set; }
+        //public ArrayList grupuri { get; set; }
         public Persoana()
         {
             nume = email = String.Empty;
@@ -42,9 +42,9 @@ namespace Agenda
 
         public string GrupAsString
         {
-            get 
-            { 
-                return string.Join(", ", grupuri.ToArray());
+            get
+            {
+                return string.Join("", _grup.ToString().Split(','));
             }
         }
 
@@ -59,8 +59,8 @@ namespace Agenda
             numarDeTelefon = Convert.ToInt32(dateFisier[NUMAR_DE_TELEFON]);
             email = dateFisier[EMAIL];
             _grup = GetGrup(dateFisier[GRUP]);
-            grupuri = new ArrayList();
-            grupuri.AddRange(dateFisier[GRUP].Split(' '));
+            /*grupuri = new ArrayList();
+            grupuri.AddRange(dateFisier[GRUP].Split(' '));*/
         }
 
         public Persoana(int _idPersoana, string _nume, string _email, Grup _grup, long _numarDeTelefon, DateTime _ziDeNastere)
@@ -78,8 +78,8 @@ namespace Agenda
             nume = p.nume;
             email = p.email;
             this._grup = p._grup;
-            numarDeTelefon= p.numarDeTelefon;
-            ziDeNastere= p.ziDeNastere;
+            numarDeTelefon = p.numarDeTelefon;
+            ziDeNastere = p.ziDeNastere;
         }
         public string ConversieLaSir_PentruFisier()
         {
@@ -90,13 +90,13 @@ namespace Agenda
                 ziDeNastere.ToString(),
                 numarDeTelefon.ToString(),
                 email,
-                _grup.ToString());
+                GrupAsString);
             return obiectPersoanaPentruFisier;
         }
 
         public Grup GetGrup(string grup)
         {
-            string[]grupuri = grup.Split(' ');
+            string[] grupuri = grup.Split(' ');
             Grup EnumGrup = Grup.None;
             foreach (string g in grupuri)
             {
